@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  cloudbase-backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: cloudbase-ide-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - HOST=0.0.0.0
+      - OLLAMA_URL=http://host.docker.internal:11434
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - cloudbase_storage:/data/cloudbase
+    restart: unless-stopped
+
+volumes:
+  cloudbase_storage:

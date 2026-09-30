@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="cloudGrad" x1="10%" y1="10%" x2="90%" y2="90%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#A78BFA" stop-opacity="0.8" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <!-- Background subtle rounded rect -->
+  <rect x="8" y="8" width="84" height="84" rx="20" fill="#111827" stroke="#2A364F" stroke-width="2"/>
+  
+  <!-- Cloud outline with gradient -->
+  <path d="M68 56C71.3 56 74 53.3 74 50C74 46.9 71.6 44.4 68.6 44.1C68.1 38.4 63.3 34 57.5 34C54.4 34 51.6 35.3 49.7 37.4C48.2 36.5 46.4 36 44.5 36C39.8 36 36 39.8 36 44.5C36 45 36.1 45.6 36.2 46.1C33.8 47.1 32 49.4 32 52.2C32 55.4 34.6 58 37.8 58L68 58" 
+        stroke="url(#cloudGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.45" />
+
+  <!-- Code brackets </> stylized in center -->
+  <path d="M42 47L34 53L42 59" stroke="url(#glowGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M58 47L66 53L58 59" stroke="url(#glowGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M53 44L47 62" stroke="#38BDF8" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Accent node dots -->
+  <circle cx="26" cy="26" r="3" fill="#3B82F6" />
+  <circle cx="74" cy="74" r="3" fill="#8B5CF6" />
+</svg>

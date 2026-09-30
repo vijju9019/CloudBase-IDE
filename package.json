@@ -1,0 +1,32 @@
+{
+  "name": "cloudbase-ide",
+  "version": "1.0.0",
+  "description": "CloudBase IDE - Local-First Browser-Based AI Development Environment",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix backend run build && npm --prefix frontend run build",
+    "test": "npm --prefix backend run test",
+    "setup": "powershell -ExecutionPolicy Bypass -File ./scripts/setup.ps1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "keywords": [
+    "cloudbase-ide",
+    "browser-ide",
+    "docker",
+    "monaco-editor",
+    "ollama",
+    "offline-ai",
+    "local-first"
+  ],
+  "author": "CloudBase Team",
+  "license": "MIT"
+}
