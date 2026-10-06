@@ -36,12 +36,15 @@ interface ProjectState {
   executionExitCode: number | null;
 
   // Layout state
-  bottomTab: 'terminal' | 'output' | 'preview' | 'logs' | 'audit';
+  bottomTab: 'terminal' | 'problems' | 'output' | 'debug' | 'ports' | 'preview' | 'logs' | 'audit';
   showAiPanel: boolean;
   showBottomPanel: boolean;
 
   // Active AI change proposal pending review
   activeProposal: ModificationProposal | null;
+
+  // Terminal run trigger for running code directly in the interactive terminal
+  terminalRunTrigger: { command?: string; filePath?: string; timestamp: number } | null;
 
   // Actions
   loadProject: (id: string) => Promise<void>;
@@ -53,7 +56,7 @@ interface ProjectState {
   saveActiveFile: () => Promise<void>;
   runCode: () => Promise<void>;
   stopCode: () => Promise<void>;
-  setBottomTab: (tab: 'terminal' | 'output' | 'preview' | 'logs' | 'audit') => void;
+  setBottomTab: (tab: 'terminal' | 'problems' | 'output' | 'debug' | 'ports' | 'preview' | 'logs' | 'audit') => void;
   toggleAiPanel: () => void;
   toggleBottomPanel: () => void;
   setActiveProposal: (proposal: ModificationProposal | null) => void;
@@ -69,6 +72,8 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
   isExecuting: false,
   executionOutput: '',
   executionExitCode: null,
+
+  terminalRunTrigger: null,
 
   bottomTab: 'terminal',
   showAiPanel: true,
@@ -190,42 +195,90 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
   },
 
   runCode: async () => {
-    const { currentProject, saveActiveFile } = get();
+    const { currentProject, saveActiveFile, activeTabPath } = get();
     if (!currentProject) return;
 
     // Autosave dirty files before running
     await saveActiveFile();
 
+    // Determine the run command based on active file or project language
+    let commandToRun = '';
+    if (activeTabPath) {
+      const ext = activeTabPath.slice(activeTabPath.lastIndexOf('.')).toLowerCase();
+      const filename = activeTabPath.split('/').pop() || activeTabPath;
+      switch (ext) {
+        case '.py':
+          commandToRun = `python ${filename}`;
+          break;
+        case '.js':
+        case '.mjs':
+        case '.cjs':
+          commandToRun = `node ${filename}`;
+          break;
+        case '.ts':
+          commandToRun = `npx ts-node ${filename}`;
+          break;
+        case '.java': {
+          const className = filename.replace(/\.java$/, '');
+          commandToRun = `javac ${filename} && java ${className}`;
+          break;
+        }
+        case '.c':
+          commandToRun = `gcc ${filename} -o a && .\\a`;
+          break;
+        case '.cpp':
+        case '.cc':
+        case '.cxx':
+          commandToRun = `g++ ${filename} -o a && .\\a`;
+          break;
+        case '.go':
+          commandToRun = `go run ${filename}`;
+          break;
+        case '.rb':
+          commandToRun = `ruby ${filename}`;
+          break;
+        case '.php':
+          commandToRun = `php ${filename}`;
+          break;
+        case '.rs':
+          commandToRun = `rustc ${filename} -o a && .\\a`;
+          break;
+        default:
+          commandToRun = `run ${filename}`;
+      }
+    } else {
+      commandToRun = 'run';
+    }
+
     set({
       isExecuting: true,
-      bottomTab: 'output',
+      bottomTab: 'terminal',
       showBottomPanel: true,
-      executionOutput: `⚡ Initializing code execution for project ${currentProject.name}...\r\n`
+      terminalRunTrigger: {
+        command: commandToRun,
+        filePath: activeTabPath || undefined,
+        timestamp: Date.now()
+      }
     });
 
-    try {
-      const result = await api.runCode(currentProject.id);
-      set({
-        isExecuting: false,
-        executionOutput: result.output || 'Execution completed without output.',
-        executionExitCode: result.exitCode
-      });
-    } catch (err: any) {
-      set({
-        isExecuting: false,
-        executionOutput: `\r\n❌ Execution Error: ${err.message}\r\n`,
-        executionExitCode: 1
-      });
-    }
+    // Also trigger background API runner so status logs are preserved
+    api.runCode(currentProject.id, commandToRun).catch(() => {});
   },
 
   stopCode: async () => {
     const { currentProject } = get();
     if (!currentProject) return;
 
+    set({
+      isExecuting: false,
+      terminalRunTrigger: {
+        command: '\x03',
+        timestamp: Date.now()
+      }
+    });
+
     try {
       await api.stopExecution(currentProject.id);
-      set({ isExecuting: false });
     } catch (err) {
       console.error('Stop failed', err);
     }

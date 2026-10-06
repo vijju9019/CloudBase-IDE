@@ -36,6 +36,7 @@ import { XTermTerminal } from '../components/terminal/XTermTerminal';
 import { AiPanel } from '../components/ai/AiPanel';
 import { DiffViewerModal } from '../components/editor/DiffViewerModal';
 import { StatusBadge, LanguageBadge } from '../components/common/Badge';
+import { ThemeToggle } from '../components/common/ThemeToggle';
 import { api } from '../services/api';
 
 export const IdePage: React.FC = () => {
@@ -112,9 +113,9 @@ export const IdePage: React.FC = () => {
 
   if (!currentProject) {
     return (
-      <div className="h-full w-full bg-[#FFFFFF] flex flex-col items-center justify-center text-slate-500 select-none">
+      <div className="h-full w-full bg-[#FFFFFF] dark:bg-[#0B0F19] flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 select-none transition-colors">
         <div className="w-8 h-8 rounded-full border-2 border-blue-600 border-t-transparent animate-spin mb-3" />
-        <p className="text-xs font-medium text-slate-600">Loading CloudBase IDE Workspace...</p>
+        <p className="text-xs font-medium text-slate-600 dark:text-slate-300">Loading CloudBase IDE Workspace...</p>
       </div>
     );
   }
@@ -133,25 +134,26 @@ export const IdePage: React.FC = () => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-[#FFFFFF] overflow-hidden select-none text-[#1E293B]">
+    <div className="h-full flex flex-col bg-[#FFFFFF] dark:bg-[#0B0F19] overflow-hidden select-none text-[#1E293B] dark:text-[#F8FAFC] transition-colors">
       {/* Top VS Code-Inspired Title Bar */}
-      <div className="h-10 bg-[#FFFFFF] border-b border-[#E2E8F0] px-3 flex items-center justify-between z-20 shadow-2xs">
+      <div className="h-10 bg-[#FFFFFF] dark:bg-[#0F172A] border-b border-[#E2E8F0] dark:border-[#1E293B] px-3 flex items-center justify-between z-20 shadow-2xs transition-colors">
         {/* Left: Project title & Back to Dashboard */}
         <div className="flex items-center gap-2.5">
           <Link
             to="/"
             title="Back to Dashboard"
-            className="p-1 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 hover:text-slate-900 dark:text-slate-200 dark:hover:text-white rounded-md text-xs font-semibold border border-slate-300 dark:border-slate-700 shadow-2xs transition-all hover:shadow-xs shrink-0"
           >
             <ArrowLeft className="w-4 h-4" />
+            <span>Back to Dashboard</span>
           </Link>
 
           <div className="flex items-center gap-1.5">
-            <span className="font-bold text-xs text-[#1E293B] tracking-tight">{currentProject.name}</span>
+            <span className="font-bold text-xs text-[#1E293B] dark:text-white tracking-tight">{currentProject.name}</span>
             <LanguageBadge language={currentProject.language} />
           </div>
 
-          <div className="h-3.5 w-[1px] bg-slate-300 hidden sm:block mx-1" />
+          <div className="h-3.5 w-[1px] bg-slate-300 dark:bg-slate-700 hidden sm:block mx-1" />
 
           {/* Container Environment Status Pill & Button */}
           <div className="flex items-center gap-1.5">
@@ -162,8 +164,8 @@ export const IdePage: React.FC = () => {
               title={isRunning ? 'Stop Container Environment' : 'Start Dedicated Docker Container'}
               className={`px-2 py-0.5 rounded text-[11px] font-medium border transition-colors shadow-2xs ${
                 isRunning
-                  ? 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
-                  : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                  ? 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/60'
+                  : 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/60'
               }`}
             >
               {isTogglingEnv ? '...' : isRunning ? 'Stop Env' : 'Start Env'}
@@ -173,15 +175,15 @@ export const IdePage: React.FC = () => {
 
         {/* Center: VS Code Command / Search Bar */}
         <div className="hidden md:flex items-center justify-center flex-1 max-w-md mx-4">
-          <div className="w-full flex items-center gap-2 bg-[#F1F5F9] hover:bg-[#E2E8F0] text-slate-600 px-3 py-1 rounded-md border border-[#E2E8F0] text-xs transition-colors cursor-pointer group shadow-2xs">
-            <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600" />
-            <span className="truncate text-slate-500 font-mono text-[11px]">
+          <div className="w-full flex items-center gap-2 bg-[#F1F5F9] hover:bg-[#E2E8F0] dark:bg-[#1E293B] dark:hover:bg-[#334155]/80 text-slate-600 dark:text-slate-300 px-3 py-1 rounded-md border border-[#E2E8F0] dark:border-[#334155] text-xs transition-colors cursor-pointer group shadow-2xs">
+            <Search className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300" />
+            <span className="truncate text-slate-500 dark:text-slate-400 font-mono text-[11px]">
               {currentProject.name} — Search files or commands (Ctrl+P)
             </span>
           </div>
         </div>
 
-        {/* Right: Primary Run Controls & Layout Toggles */}
+        {/* Right: Primary Run Controls, Theme Toggle & Layout Toggles */}
         <div className="flex items-center gap-2">
           {/* Run / Stop Button */}
           {isExecuting ? (
@@ -203,7 +205,10 @@ export const IdePage: React.FC = () => {
             </button>
           )}
 
-          <div className="h-3.5 w-[1px] bg-slate-300 hidden sm:block mx-1" />
+          <div className="h-3.5 w-[1px] bg-slate-300 dark:bg-slate-700 hidden sm:block mx-1" />
+
+          {/* IDE THEME TOGGLE BUTTON (Direct light & dark toggle inside IDE) */}
+          <ThemeToggle variant="icon" />
 
           {/* Toggle Bottom Panel */}
           <button
@@ -211,8 +216,8 @@ export const IdePage: React.FC = () => {
             title="Toggle Terminal Panel"
             className={`p-1.5 rounded text-xs transition-colors ${
               showBottomPanel
-                ? 'text-blue-600 bg-blue-50 border border-blue-200'
-                : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
+                ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800'
+                : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
             <TerminalIcon className="w-4 h-4" />
@@ -224,8 +229,8 @@ export const IdePage: React.FC = () => {
             title="Toggle CloudBase AI Assistant"
             className={`p-1.5 rounded text-xs transition-colors ${
               showAiPanel
-                ? 'text-blue-600 bg-blue-50 border border-blue-200'
-                : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
+                ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800'
+                : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
             <Bot className="w-4 h-4" />
@@ -236,7 +241,7 @@ export const IdePage: React.FC = () => {
       {/* Main Workspace Body with Left Activity Bar */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Activity Bar */}
-        <div className="w-12 bg-[#F1F5F9] border-r border-[#E2E8F0] flex flex-col justify-between items-center py-2 z-10 select-none">
+        <div className="w-12 bg-[#F1F5F9] dark:bg-[#0F172A] border-r border-[#E2E8F0] dark:border-[#1E293B] flex flex-col justify-between items-center py-2 z-10 select-none transition-colors">
           {/* Top Activity Icons */}
           <div className="flex flex-col items-center gap-1 w-full">
             <button
@@ -244,8 +249,8 @@ export const IdePage: React.FC = () => {
               title="Explorer (Files)"
               className={`w-full py-2.5 flex items-center justify-center transition-colors relative ${
                 activeActivity === 'explorer' && showExplorer
-                  ? 'text-[#2563EB] bg-[#FFFFFF] border-l-2 border-[#2563EB]'
-                  : 'text-[#64748B] hover:text-[#1E293B] hover:bg-slate-200/60'
+                  ? 'text-[#2563EB] dark:text-blue-400 bg-[#FFFFFF] dark:bg-[#1E293B] border-l-2 border-[#2563EB] dark:border-blue-400'
+                  : 'text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800'
               }`}
             >
               <Files className="w-5 h-5" />
@@ -256,8 +261,8 @@ export const IdePage: React.FC = () => {
               title="Search in Project"
               className={`w-full py-2.5 flex items-center justify-center transition-colors relative ${
                 activeActivity === 'search' && showExplorer
-                  ? 'text-[#2563EB] bg-[#FFFFFF] border-l-2 border-[#2563EB]'
-                  : 'text-[#64748B] hover:text-[#1E293B] hover:bg-slate-200/60'
+                  ? 'text-[#2563EB] dark:text-blue-400 bg-[#FFFFFF] dark:bg-[#1E293B] border-l-2 border-[#2563EB] dark:border-blue-400'
+                  : 'text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800'
               }`}
             >
               <Search className="w-5 h-5" />
@@ -268,8 +273,8 @@ export const IdePage: React.FC = () => {
               title="Source Control (Git)"
               className={`w-full py-2.5 flex items-center justify-center transition-colors relative ${
                 activeActivity === 'git' && showExplorer
-                  ? 'text-[#2563EB] bg-[#FFFFFF] border-l-2 border-[#2563EB]'
-                  : 'text-[#64748B] hover:text-[#1E293B] hover:bg-slate-200/60'
+                  ? 'text-[#2563EB] dark:text-blue-400 bg-[#FFFFFF] dark:bg-[#1E293B] border-l-2 border-[#2563EB] dark:border-blue-400'
+                  : 'text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800'
               }`}
             >
               <GitBranch className="w-5 h-5" />
@@ -280,8 +285,8 @@ export const IdePage: React.FC = () => {
               title="Run & Debug"
               className={`w-full py-2.5 flex items-center justify-center transition-colors relative ${
                 activeActivity === 'run' && showExplorer
-                  ? 'text-[#2563EB] bg-[#FFFFFF] border-l-2 border-[#2563EB]'
-                  : 'text-[#64748B] hover:text-[#1E293B] hover:bg-slate-200/60'
+                  ? 'text-[#2563EB] dark:text-blue-400 bg-[#FFFFFF] dark:bg-[#1E293B] border-l-2 border-[#2563EB] dark:border-blue-400'
+                  : 'text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800'
               }`}
             >
               <PlayCircle className="w-5 h-5" />
@@ -292,8 +297,8 @@ export const IdePage: React.FC = () => {
               title="CloudBase AI Assistant"
               className={`w-full py-2.5 flex items-center justify-center transition-colors relative ${
                 showAiPanel
-                  ? 'text-[#2563EB] bg-[#FFFFFF] border-l-2 border-[#2563EB]'
-                  : 'text-[#64748B] hover:text-[#1E293B] hover:bg-slate-200/60'
+                  ? 'text-[#2563EB] dark:text-blue-400 bg-[#FFFFFF] dark:bg-[#1E293B] border-l-2 border-[#2563EB] dark:border-blue-400'
+                  : 'text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800'
               }`}
             >
               <Bot className="w-5 h-5" />
@@ -302,7 +307,7 @@ export const IdePage: React.FC = () => {
             <Link
               to="/guardian"
               title="Storage Guardian"
-              className="w-full py-2.5 flex items-center justify-center text-[#64748B] hover:text-[#1E293B] hover:bg-slate-200/60 transition-colors"
+              className="w-full py-2.5 flex items-center justify-center text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-colors"
             >
               <ShieldCheck className="w-5 h-5" />
             </Link>
@@ -313,7 +318,7 @@ export const IdePage: React.FC = () => {
             <Link
               to="/settings"
               title="IDE Settings"
-              className="w-full py-2 flex items-center justify-center text-[#64748B] hover:text-[#1E293B] hover:bg-slate-200/60 transition-colors"
+              className="w-full py-2 flex items-center justify-center text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-colors"
             >
               <Settings className="w-5 h-5" />
             </Link>
@@ -330,8 +335,8 @@ export const IdePage: React.FC = () => {
                   {activeActivity === 'explorer' && <FileTree nodes={fileTree} />}
 
                   {activeActivity === 'search' && (
-                    <div className="h-full flex flex-col bg-[#F8FAFC] border-r border-[#E2E8F0] p-3 text-[#1E293B]">
-                      <div className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider mb-2">
+                    <div className="h-full flex flex-col bg-[#F8FAFC] dark:bg-[#0F172A] border-r border-[#E2E8F0] dark:border-[#1E293B] p-3 text-[#1E293B] dark:text-[#F8FAFC] transition-colors">
+                      <div className="text-[11px] font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-2 font-mono">
                         SEARCH IN WORKSPACE
                       </div>
                       <input
@@ -339,32 +344,32 @@ export const IdePage: React.FC = () => {
                         placeholder="Search across files..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="bg-white border border-[#CBD5E1] rounded px-2.5 py-1.5 text-xs text-[#1E293B] outline-none focus:border-blue-500 shadow-2xs"
+                        className="bg-white dark:bg-[#1E293B] border border-[#CBD5E1] dark:border-[#334155] rounded px-2.5 py-1.5 text-xs text-[#1E293B] dark:text-white outline-none focus:border-blue-500 shadow-2xs"
                       />
-                      <div className="mt-4 text-xs text-[#64748B] leading-relaxed">
+                      <div className="mt-4 text-xs text-[#64748B] dark:text-slate-400 leading-relaxed">
                         Type keywords above to filter workspace files or locate declarations.
                       </div>
                     </div>
                   )}
 
                   {activeActivity === 'git' && (
-                    <div className="h-full flex flex-col bg-[#F8FAFC] border-r border-[#E2E8F0] p-3 text-[#1E293B]">
-                      <div className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider mb-2">
+                    <div className="h-full flex flex-col bg-[#F8FAFC] dark:bg-[#0F172A] border-r border-[#E2E8F0] dark:border-[#1E293B] p-3 text-[#1E293B] dark:text-[#F8FAFC] transition-colors">
+                      <div className="text-[11px] font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-2 font-mono">
                         SOURCE CONTROL
                       </div>
-                      <div className="p-3 bg-white border border-[#E2E8F0] rounded-lg text-xs shadow-2xs">
-                        <div className="flex items-center gap-1.5 text-[#1E293B] font-semibold mb-1">
-                          <GitBranch className="w-3.5 h-3.5 text-blue-600" />
+                      <div className="p-3 bg-white dark:bg-[#1E293B] border border-[#E2E8F0] dark:border-[#334155] rounded-lg text-xs shadow-2xs">
+                        <div className="flex items-center gap-1.5 text-[#1E293B] dark:text-white font-semibold mb-1">
+                          <GitBranch className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                           <span>Branch: main</span>
                         </div>
-                        <p className="text-[11px] text-[#64748B]">Workspace is tracked inside Storage Guardian repository.</p>
+                        <p className="text-[11px] text-[#64748B] dark:text-slate-400">Workspace is tracked inside Storage Guardian repository.</p>
                       </div>
                     </div>
                   )}
 
                   {activeActivity === 'run' && (
-                    <div className="h-full flex flex-col bg-[#F8FAFC] border-r border-[#E2E8F0] p-3 text-[#1E293B]">
-                      <div className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider mb-2">
+                    <div className="h-full flex flex-col bg-[#F8FAFC] dark:bg-[#0F172A] border-r border-[#E2E8F0] dark:border-[#1E293B] p-3 text-[#1E293B] dark:text-[#F8FAFC] transition-colors">
+                      <div className="text-[11px] font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-2 font-mono">
                         RUN & DEBUG
                       </div>
                       <button
@@ -378,7 +383,7 @@ export const IdePage: React.FC = () => {
                   )}
                 </Panel>
 
-                <PanelResizeHandle className="w-1 bg-[#E2E8F0] hover:bg-[#2563EB] transition-colors cursor-col-resize" />
+                <PanelResizeHandle className="w-1 bg-[#E2E8F0] dark:bg-[#1E293B] hover:bg-[#2563EB] dark:hover:bg-blue-500 transition-colors cursor-col-resize" />
               </>
             )}
 
@@ -387,7 +392,7 @@ export const IdePage: React.FC = () => {
               <PanelGroup direction="vertical">
                 {/* Editor Workspace */}
                 <Panel defaultSize={showBottomPanel ? 65 : 100} minSize={20}>
-                  <div className="h-full flex flex-col bg-[#FFFFFF]">
+                  <div className="h-full flex flex-col bg-[#FFFFFF] dark:bg-[#0B0F19] transition-colors">
                     <EditorTabs />
                     <div className="flex-1 relative overflow-hidden">
                       <MonacoEditor />
@@ -398,38 +403,68 @@ export const IdePage: React.FC = () => {
                 {/* Bottom Resizable Panel (VS Code Style) */}
                 {showBottomPanel && (
                   <>
-                    <PanelResizeHandle className="h-1 bg-[#E2E8F0] hover:bg-[#2563EB] transition-colors cursor-row-resize" />
+                    <PanelResizeHandle className="h-1 bg-[#E2E8F0] dark:bg-[#1E293B] hover:bg-[#2563EB] dark:hover:bg-blue-500 transition-colors cursor-row-resize" />
                     <Panel defaultSize={35} minSize={15} maxSize={70}>
-                      <div className="h-full flex flex-col bg-[#FFFFFF] border-t border-[#E2E8F0]">
+                      <div className="h-full flex flex-col bg-[#FFFFFF] dark:bg-[#0F172A] border-t border-[#E2E8F0] dark:border-[#1E293B] transition-colors">
                         {/* Bottom Panel Tabs Strip */}
-                        <div className="h-8 bg-[#F8FAFC] border-b border-[#E2E8F0] flex items-center justify-between px-2 select-none">
-                          <div className="flex items-center gap-1 text-xs">
+                        <div className="h-8 bg-[#F8FAFC] dark:bg-[#0F172A] border-b border-[#E2E8F0] dark:border-[#1E293B] flex items-center justify-between px-2 select-none overflow-x-auto transition-colors">
+                          <div className="flex items-center gap-0.5 text-xs">
                             <button
                               onClick={() => setBottomTab('terminal')}
                               className={`px-2.5 py-1 text-[11px] font-mono font-medium transition-colors ${
                                 bottomTab === 'terminal'
-                                  ? 'text-[#2563EB] border-b-2 border-[#2563EB] font-bold'
-                                  : 'text-[#64748B] hover:text-[#1E293B]'
+                                  ? 'text-[#2563EB] dark:text-blue-400 border-b-2 border-[#2563EB] dark:border-blue-400 font-bold'
+                                  : 'text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white'
                               }`}
                             >
                               TERMINAL
                             </button>
                             <button
+                              onClick={() => setBottomTab('problems')}
+                              className={`px-2.5 py-1 text-[11px] font-mono font-medium transition-colors ${
+                                bottomTab === 'problems'
+                                  ? 'text-[#2563EB] dark:text-blue-400 border-b-2 border-[#2563EB] dark:border-blue-400 font-bold'
+                                  : 'text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white'
+                              }`}
+                            >
+                              PROBLEMS
+                            </button>
+                            <button
                               onClick={() => setBottomTab('output')}
                               className={`px-2.5 py-1 text-[11px] font-mono font-medium transition-colors ${
                                 bottomTab === 'output'
-                                  ? 'text-[#2563EB] border-b-2 border-[#2563EB] font-bold'
-                                  : 'text-[#64748B] hover:text-[#1E293B]'
+                                  ? 'text-[#2563EB] dark:text-blue-400 border-b-2 border-[#2563EB] dark:border-blue-400 font-bold'
+                                  : 'text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white'
                               }`}
                             >
                               OUTPUT
                             </button>
                             <button
+                              onClick={() => setBottomTab('debug')}
+                              className={`px-2.5 py-1 text-[11px] font-mono font-medium transition-colors ${
+                                bottomTab === 'debug'
+                                  ? 'text-[#2563EB] dark:text-blue-400 border-b-2 border-[#2563EB] dark:border-blue-400 font-bold'
+                                  : 'text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white'
+                              }`}
+                            >
+                              DEBUG CONSOLE
+                            </button>
+                            <button
+                              onClick={() => setBottomTab('ports')}
+                              className={`px-2.5 py-1 text-[11px] font-mono font-medium transition-colors ${
+                                bottomTab === 'ports'
+                                  ? 'text-[#2563EB] dark:text-blue-400 border-b-2 border-[#2563EB] dark:border-blue-400 font-bold'
+                                  : 'text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white'
+                              }`}
+                            >
+                              PORTS
+                            </button>
+                            <button
                               onClick={() => setBottomTab('preview')}
                               className={`px-2.5 py-1 text-[11px] font-mono font-medium transition-colors ${
                                 bottomTab === 'preview'
-                                  ? 'text-[#2563EB] border-b-2 border-[#2563EB] font-bold'
-                                  : 'text-[#64748B] hover:text-[#1E293B]'
+                                  ? 'text-[#2563EB] dark:text-blue-400 border-b-2 border-[#2563EB] dark:border-blue-400 font-bold'
+                                  : 'text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white'
                               }`}
                             >
                               PREVIEW
@@ -438,8 +473,8 @@ export const IdePage: React.FC = () => {
                               onClick={() => setBottomTab('logs')}
                               className={`px-2.5 py-1 text-[11px] font-mono font-medium transition-colors ${
                                 bottomTab === 'logs'
-                                  ? 'text-[#2563EB] border-b-2 border-[#2563EB] font-bold'
-                                  : 'text-[#64748B] hover:text-[#1E293B]'
+                                  ? 'text-[#2563EB] dark:text-blue-400 border-b-2 border-[#2563EB] dark:border-blue-400 font-bold'
+                                  : 'text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white'
                               }`}
                             >
                               CONTAINER LOGS
@@ -448,8 +483,8 @@ export const IdePage: React.FC = () => {
                               onClick={() => setBottomTab('audit')}
                               className={`px-2.5 py-1 text-[11px] font-mono font-medium transition-colors ${
                                 bottomTab === 'audit'
-                                  ? 'text-[#2563EB] border-b-2 border-[#2563EB] font-bold'
-                                  : 'text-[#64748B] hover:text-[#1E293B]'
+                                  ? 'text-[#2563EB] dark:text-blue-400 border-b-2 border-[#2563EB] dark:border-blue-400 font-bold'
+                                  : 'text-[#64748B] dark:text-slate-400 hover:text-[#1E293B] dark:hover:text-white'
                               }`}
                             >
                               AUDIT TRAIL
@@ -457,11 +492,11 @@ export const IdePage: React.FC = () => {
                           </div>
 
                           {/* Right Controls */}
-                          <div className="flex items-center gap-1 text-slate-400">
+                          <div className="flex items-center gap-1 text-slate-400 dark:text-slate-500">
                             <button
                               onClick={toggleBottomPanel}
                               title="Close Panel"
-                              className="p-1 hover:text-slate-700 rounded hover:bg-slate-200 transition-colors"
+                              className="p-1 hover:text-slate-700 dark:hover:text-slate-200 rounded hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
                             >
                               <X className="w-3.5 h-3.5" />
                             </button>
@@ -474,45 +509,110 @@ export const IdePage: React.FC = () => {
                             <XTermTerminal projectId={currentProject.id} />
                           )}
 
+                          {bottomTab === 'problems' && (
+                            <div className="h-full p-4 overflow-y-auto bg-white dark:bg-[#0B0F19] font-mono text-xs text-[#1E293B] dark:text-white transition-colors">
+                              <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold mb-2">
+                                <CheckCircle2 className="w-4 h-4" />
+                                <span>No problems have been detected in the workspace.</span>
+                              </div>
+                              <p className="text-[#64748B] dark:text-slate-400 text-[11px]">
+                                Code diagnostics, lint errors, and compiler warnings will appear here in real time.
+                              </p>
+                            </div>
+                          )}
+
                           {bottomTab === 'output' && (
-                            <div className="h-full p-3 overflow-y-auto font-mono text-xs text-[#1E293B] bg-[#FFFFFF] select-text whitespace-pre-wrap leading-relaxed">
+                            <div className="h-full p-3 overflow-y-auto font-mono text-xs text-[#1E293B] dark:text-slate-200 bg-[#FFFFFF] dark:bg-[#0B0F19] select-text whitespace-pre-wrap leading-relaxed transition-colors">
                               {executionOutput || 'No active execution output. Click "Run Code" above.'}
                             </div>
                           )}
 
+                          {bottomTab === 'debug' && (
+                            <div className="h-full p-4 overflow-y-auto bg-white dark:bg-[#0B0F19] font-mono text-xs text-[#1E293B] dark:text-slate-200 transition-colors">
+                              <div className="text-slate-500 dark:text-slate-400 mb-1">
+                                [CloudBase Debug Console] Ready. Run code in the terminal or click "Run Code" in header.
+                              </div>
+                            </div>
+                          )}
+
+                          {bottomTab === 'ports' && (
+                            <div className="h-full p-4 overflow-y-auto bg-white dark:bg-[#0B0F19] text-xs select-text transition-colors">
+                              <table className="w-full text-left font-mono text-xs">
+                                <thead>
+                                  <tr className="border-b border-[#E2E8F0] dark:border-[#1E293B] text-[#64748B] dark:text-slate-400">
+                                    <th className="py-1.5">Port</th>
+                                    <th className="py-1.5">Service</th>
+                                    <th className="py-1.5">Status</th>
+                                    <th className="py-1.5">Address</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr className="border-b border-[#F1F5F9] dark:border-[#1E293B]/60">
+                                    <td className="py-1.5 font-bold text-blue-600 dark:text-blue-400">3000</td>
+                                    <td className="py-1.5 text-slate-700 dark:text-slate-300">CloudBase IDE Backend</td>
+                                    <td className="py-1.5 text-emerald-600 dark:text-emerald-400 font-semibold">Online</td>
+                                    <td className="py-1.5 text-slate-500 dark:text-slate-400">127.0.0.1:3000</td>
+                                  </tr>
+                                  <tr className="border-b border-[#F1F5F9] dark:border-[#1E293B]/60">
+                                    <td className="py-1.5 font-bold text-blue-600 dark:text-blue-400">5173</td>
+                                    <td className="py-1.5 text-slate-700 dark:text-slate-300">Vite Dev Server (Frontend)</td>
+                                    <td className="py-1.5 text-emerald-600 dark:text-emerald-400 font-semibold">Running</td>
+                                    <td className="py-1.5 text-slate-500 dark:text-slate-400">localhost:5173</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          )}
+
                           {bottomTab === 'preview' && (
-                            <div className="h-full w-full flex flex-col bg-white">
-                              <div className="h-7 bg-[#F8FAFC] border-b border-[#E2E8F0] px-3 flex items-center justify-between text-xs text-[#64748B] font-mono">
-                                <span>Controlled Sandbox Preview</span>
+                            <div className="h-full w-full flex flex-col bg-white dark:bg-[#0B0F19] transition-colors">
+                              <div className="h-8 bg-[#F8FAFC] dark:bg-[#0F172A] border-b border-[#E2E8F0] dark:border-[#1E293B] px-3 flex items-center justify-between text-xs text-[#64748B] dark:text-slate-400 font-mono gap-3 transition-colors">
+                                <div className="flex items-center gap-2 flex-1 max-w-md">
+                                  <button
+                                    onClick={() => {
+                                      const iframe = document.getElementById('preview-iframe') as HTMLIFrameElement;
+                                      if (iframe) iframe.src = iframe.src;
+                                    }}
+                                    title="Reload preview"
+                                    className="p-1 hover:text-slate-900 dark:hover:text-white rounded hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+                                  >
+                                    <RefreshCw className="w-3.5 h-3.5" />
+                                  </button>
+                                  <div className="flex-1 bg-white dark:bg-[#1E293B] border border-[#CBD5E1] dark:border-[#334155] rounded px-2.5 py-0.5 text-[11px] text-slate-600 dark:text-slate-300 flex items-center gap-1.5 truncate shadow-2xs">
+                                    <span className="text-emerald-600 dark:text-emerald-400">http://</span>
+                                    <span>localhost:3000/api/preview/{currentProject.id}/index.html</span>
+                                  </div>
+                                </div>
                                 <a
                                   href={`/api/preview/${currentProject.id}/index.html`}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="flex items-center gap-1 text-blue-600 hover:underline"
+                                  className="flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline"
                                 >
                                   <span>Open in Tab</span>
                                   <ExternalLink className="w-3 h-3" />
                                 </a>
                               </div>
                               <iframe
+                                id="preview-iframe"
                                 src={`/api/preview/${currentProject.id}/index.html`}
                                 title="Project Live Preview"
-                                className="w-full flex-1 border-none"
+                                className="w-full flex-1 border-none bg-white"
                               />
                             </div>
                           )}
 
                           {bottomTab === 'logs' && (
-                            <div className="h-full p-3 overflow-y-auto font-mono text-xs text-[#1E293B] bg-[#FFFFFF] select-text whitespace-pre-wrap leading-relaxed">
+                            <div className="h-full p-3 overflow-y-auto font-mono text-xs text-[#1E293B] dark:text-slate-200 bg-[#FFFFFF] dark:bg-[#0B0F19] select-text whitespace-pre-wrap leading-relaxed transition-colors">
                               {containerLogs || 'No container logs available.'}
                             </div>
                           )}
 
                           {bottomTab === 'audit' && (
-                            <div className="h-full p-3 overflow-y-auto bg-[#FFFFFF]">
+                            <div className="h-full p-3 overflow-y-auto bg-[#FFFFFF] dark:bg-[#0B0F19] transition-colors">
                               <table className="w-full text-xs text-left">
                                 <thead>
-                                  <tr className="border-b border-[#E2E8F0] text-[#64748B] font-mono">
+                                  <tr className="border-b border-[#E2E8F0] dark:border-[#1E293B] text-[#64748B] dark:text-slate-400 font-mono">
                                     <th className="py-1">Timestamp</th>
                                     <th className="py-1">Operation</th>
                                     <th className="py-1">Status</th>
@@ -521,11 +621,11 @@ export const IdePage: React.FC = () => {
                                 </thead>
                                 <tbody>
                                   {auditLogs.map((log) => (
-                                    <tr key={log.id} className="border-b border-[#E2E8F0]/70 text-[#1E293B]">
-                                      <td className="py-1 text-[#64748B] font-mono">{new Date(log.timestamp).toLocaleTimeString()}</td>
-                                      <td className="py-1 font-semibold text-blue-600">{log.operation}</td>
-                                      <td className="py-1 text-emerald-600">{log.status}</td>
-                                      <td className="py-1 text-[#64748B] truncate max-w-xs">{log.details || '-'}</td>
+                                    <tr key={log.id} className="border-b border-[#E2E8F0]/70 dark:border-[#1E293B]/70 text-[#1E293B] dark:text-slate-200">
+                                      <td className="py-1 text-[#64748B] dark:text-slate-400 font-mono">{new Date(log.timestamp).toLocaleTimeString()}</td>
+                                      <td className="py-1 font-semibold text-blue-600 dark:text-blue-400">{log.operation}</td>
+                                      <td className="py-1 text-emerald-600 dark:text-emerald-400">{log.status}</td>
+                                      <td className="py-1 text-[#64748B] dark:text-slate-400 truncate max-w-xs">{log.details || '-'}</td>
                                     </tr>
                                   ))}
                                 </tbody>
@@ -543,7 +643,7 @@ export const IdePage: React.FC = () => {
             {/* Panel 3: Right AI Panel */}
             {showAiPanel && (
               <>
-                <PanelResizeHandle className="w-1 bg-[#E2E8F0] hover:bg-[#2563EB] transition-colors cursor-col-resize" />
+                <PanelResizeHandle className="w-1 bg-[#E2E8F0] dark:bg-[#1E293B] hover:bg-[#2563EB] dark:hover:bg-blue-500 transition-colors cursor-col-resize" />
                 <Panel defaultSize={26} minSize={20} maxSize={45}>
                   <AiPanel />
                 </Panel>
@@ -554,10 +654,10 @@ export const IdePage: React.FC = () => {
       </div>
 
       {/* VS Code Classic Blue Bottom Status Bar */}
-      <footer className="h-6 bg-[#2563EB] text-white px-3 flex items-center justify-between text-[11px] font-mono select-none z-20">
+      <footer className="h-6 bg-[#2563EB] dark:bg-[#1E40AF] text-white px-3 flex items-center justify-between text-[11px] font-mono select-none z-20 transition-colors">
         {/* Left items */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 bg-blue-700 px-2 py-0.5 rounded text-[10px] font-bold">
+          <div className="flex items-center gap-1.5 bg-blue-700 dark:bg-blue-900 px-2 py-0.5 rounded text-[10px] font-bold">
             <span>&gt;&lt;</span>
             <span>{currentProject.status === 'running' ? 'Docker: Active' : 'Docker: Standby'}</span>
           </div>

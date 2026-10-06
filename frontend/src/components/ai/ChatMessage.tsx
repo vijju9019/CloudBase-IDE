@@ -119,19 +119,19 @@ export const ChatMessageView: React.FC<ChatMessageProps> = ({
           {lines.map((line, lIdx) => {
             if (line.startsWith('### ')) {
               return (
-                <h4 key={lIdx} className="text-xs font-bold text-[#1E293B] mt-2 mb-1 flex items-center gap-1.5">
-                  <Sparkles className="w-3 h-3 text-blue-600" />
+                <h4 key={lIdx} className="text-xs font-bold text-[#1E293B] dark:text-white mt-2 mb-1 flex items-center gap-1.5">
+                  <Sparkles className="w-3 h-3 text-blue-600 dark:text-blue-400" />
                   {line.replace('### ', '')}
                 </h4>
               );
             }
             if (line.startsWith('## ')) {
-              return <h3 key={lIdx} className="text-xs font-bold text-blue-700 mt-2">{line.replace('## ', '')}</h3>;
+              return <h3 key={lIdx} className="text-xs font-bold text-blue-700 dark:text-blue-400 mt-2">{line.replace('## ', '')}</h3>;
             }
             if (line.startsWith('- ') || line.startsWith('* ')) {
               return (
-                <div key={lIdx} className="flex items-start gap-1.5 pl-2 text-slate-700">
-                  <span className="text-blue-600 mt-0.5">•</span>
+                <div key={lIdx} className="flex items-start gap-1.5 pl-2 text-slate-700 dark:text-slate-300">
+                  <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
                   <span>{formatInline(line.slice(2))}</span>
                 </div>
               );
@@ -139,7 +139,7 @@ export const ChatMessageView: React.FC<ChatMessageProps> = ({
             if (!line.trim()) {
               return <div key={lIdx} className="h-1.5" />;
             }
-            return <p key={lIdx} className={role === 'user' ? 'text-white' : 'text-[#334155]'}>{formatInline(line)}</p>;
+            return <p key={lIdx} className={role === 'user' ? 'text-white' : 'text-[#334155] dark:text-slate-200'}>{formatInline(line)}</p>;
           })}
         </div>
       );
@@ -157,7 +157,7 @@ export const ChatMessageView: React.FC<ChatMessageProps> = ({
             className={`px-1.5 py-0.5 rounded font-mono text-[11px] ${
               role === 'user'
                 ? 'bg-blue-700 text-white'
-                : 'bg-slate-100 text-blue-700 border border-slate-200'
+                : 'bg-slate-100 dark:bg-slate-800 text-blue-700 dark:text-blue-300 border border-slate-200 dark:border-slate-700'
             }`}
           >
             {seg.slice(1, -1)}
@@ -166,7 +166,7 @@ export const ChatMessageView: React.FC<ChatMessageProps> = ({
       }
       if (seg.startsWith('**') && seg.endsWith('**')) {
         return (
-          <strong key={i} className={`font-semibold ${role === 'user' ? 'text-white' : 'text-[#1E293B]'}`}>
+          <strong key={i} className={`font-semibold ${role === 'user' ? 'text-white' : 'text-[#1E293B] dark:text-white'}`}>
             {seg.slice(2, -2)}
           </strong>
         );
@@ -186,20 +186,20 @@ export const ChatMessageView: React.FC<ChatMessageProps> = ({
   return (
     <div className={`flex flex-col ${role === 'user' ? 'items-end' : 'items-start'} my-2`}>
       <div
-        className={`max-w-[94%] rounded-xl p-3 text-xs shadow-xs ${
+        className={`max-w-[94%] rounded-xl p-3 text-xs shadow-xs transition-colors ${
           role === 'user'
             ? 'bg-blue-600 text-white rounded-tr-none'
-            : 'bg-[#FFFFFF] text-[#1E293B] border border-[#E2E8F0] rounded-tl-none shadow-xs'
+            : 'bg-[#FFFFFF] dark:bg-[#1E293B] text-[#1E293B] dark:text-[#F8FAFC] border border-[#E2E8F0] dark:border-[#334155] rounded-tl-none shadow-xs'
         }`}
       >
         {renderFormattedContent(content)}
         {isStreaming && (
-          <span className="inline-block w-1.5 h-3.5 bg-blue-600 ml-1 animate-pulse" />
+          <span className="inline-block w-1.5 h-3.5 bg-blue-600 dark:bg-blue-400 ml-1 animate-pulse" />
         )}
       </div>
 
       <div className="flex items-center gap-2 mt-1 px-1">
-        <span className="text-[10px] text-[#94A3B8] font-medium">
+        <span className="text-[10px] text-[#94A3B8] dark:text-slate-400 font-medium">
           {role === 'user' ? 'You' : 'CloudBase AI (ChatGPT Mode)'}
         </span>
       </div>
@@ -211,7 +211,7 @@ export const ChatMessageView: React.FC<ChatMessageProps> = ({
             <button
               key={i}
               onClick={() => onSuggestionClick(s)}
-              className="text-[10px] px-2.5 py-1 rounded-full bg-[#FFFFFF] hover:bg-blue-50 text-[#475569] hover:text-blue-700 border border-[#E2E8F0] hover:border-blue-300 transition-colors shadow-2xs"
+              className="text-[10px] px-2.5 py-1 rounded-full bg-[#FFFFFF] dark:bg-[#1E293B] hover:bg-blue-50 dark:hover:bg-blue-950/60 text-[#475569] dark:text-slate-300 hover:text-blue-700 dark:hover:text-blue-300 border border-[#E2E8F0] dark:border-[#334155] hover:border-blue-300 dark:hover:border-blue-700 transition-colors shadow-2xs"
             >
               {s}
             </button>

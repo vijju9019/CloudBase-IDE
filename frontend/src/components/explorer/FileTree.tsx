@@ -93,14 +93,14 @@ export const FileTree: React.FC<FileTreeProps> = ({ nodes }) => {
 
   const getFileIconColor = (name: string) => {
     const lower = name.toLowerCase();
-    if (lower.endsWith('.py')) return 'text-blue-600';
-    if (lower.endsWith('.js') || lower.endsWith('.jsx')) return 'text-amber-500';
-    if (lower.endsWith('.ts') || lower.endsWith('.tsx')) return 'text-blue-500';
-    if (lower.endsWith('.json')) return 'text-emerald-600';
-    if (lower.endsWith('.html')) return 'text-orange-500';
-    if (lower.endsWith('.css')) return 'text-sky-500';
-    if (lower.endsWith('.md')) return 'text-slate-500';
-    return 'text-slate-400';
+    if (lower.endsWith('.py')) return 'text-blue-500 dark:text-blue-400';
+    if (lower.endsWith('.js') || lower.endsWith('.jsx')) return 'text-amber-500 dark:text-amber-400';
+    if (lower.endsWith('.ts') || lower.endsWith('.tsx')) return 'text-blue-500 dark:text-sky-400';
+    if (lower.endsWith('.json')) return 'text-emerald-500 dark:text-emerald-400';
+    if (lower.endsWith('.html')) return 'text-orange-500 dark:text-orange-400';
+    if (lower.endsWith('.css')) return 'text-sky-500 dark:text-cyan-400';
+    if (lower.endsWith('.md')) return 'text-slate-400 dark:text-slate-400';
+    return 'text-slate-400 dark:text-slate-500';
   };
 
   const renderNode = (node: FileNode, depth = 0) => {
@@ -127,17 +127,17 @@ export const FileTree: React.FC<FileTreeProps> = ({ nodes }) => {
           style={{ paddingLeft: `${depth * 14 + 10}px` }}
           className={`group flex items-center justify-between py-1 pr-2 text-xs font-mono cursor-pointer transition-colors relative ${
             isActive
-              ? 'bg-[#DBEAFE] text-[#1E293B] font-semibold border-l-2 border-[#2563EB]'
-              : 'text-[#334155] hover:bg-[#EFF6FF] hover:text-[#1E293B]'
+              ? 'bg-[#DBEAFE] dark:bg-blue-950/70 text-[#1E293B] dark:text-blue-200 font-semibold border-l-2 border-[#2563EB] dark:border-blue-400'
+              : 'text-[#334155] dark:text-slate-300 hover:bg-[#EFF6FF] dark:hover:bg-slate-800/80 hover:text-[#1E293B] dark:hover:text-white'
           }`}
         >
           <div className="flex items-center gap-1.5 truncate">
             {isFolder ? (
               <>
                 {isCollapsed ? (
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
                 ) : (
-                  <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
                 )}
                 {isCollapsed ? (
                   <Folder className="w-3.5 h-3.5 text-amber-500 fill-amber-500/20 shrink-0" />
@@ -160,7 +160,7 @@ export const FileTree: React.FC<FileTreeProps> = ({ nodes }) => {
                   autoFocus
                   onChange={(e) => setRenameValue(e.target.value)}
                   onBlur={() => setRenamingPath(null)}
-                  className="bg-white text-[#1E293B] px-1 py-0.5 rounded text-xs border border-blue-500 outline-none w-32 shadow-xs"
+                  className="bg-white dark:bg-[#0B0F19] text-[#1E293B] dark:text-white px-1 py-0.5 rounded text-xs border border-blue-500 outline-none w-32 shadow-xs"
                 />
               </form>
             ) : (
@@ -177,14 +177,14 @@ export const FileTree: React.FC<FileTreeProps> = ({ nodes }) => {
                 setRenameValue(node.name);
               }}
               title="Rename"
-              className="p-1 text-slate-400 hover:text-slate-700 rounded hover:bg-slate-200/60"
+              className="p-1 text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 rounded hover:bg-slate-200/60 dark:hover:bg-slate-700"
             >
               <Edit2 className="w-3 h-3" />
             </button>
             <button
               onClick={(e) => handleDelete(e, node.path)}
               title="Delete"
-              className="p-1 text-slate-400 hover:text-red-600 rounded hover:bg-red-50"
+              className="p-1 text-slate-400 dark:text-slate-500 hover:text-red-600 dark:hover:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-950/40"
             >
               <Trash2 className="w-3 h-3" />
             </button>
@@ -202,31 +202,31 @@ export const FileTree: React.FC<FileTreeProps> = ({ nodes }) => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-[#F8FAFC] border-r border-[#E2E8F0] select-none text-[#1E293B]">
+    <div className="h-full flex flex-col bg-[#F8FAFC] dark:bg-[#0F172A] border-r border-[#E2E8F0] dark:border-[#1E293B] select-none text-[#1E293B] dark:text-[#F8FAFC] transition-colors">
       {/* Explorer Top Section Header */}
-      <div className="h-9 px-3 border-b border-[#E2E8F0] bg-[#F8FAFC] flex items-center justify-between text-[11px] font-semibold text-[#64748B] tracking-wider uppercase">
+      <div className="h-9 px-3 border-b border-[#E2E8F0] dark:border-[#1E293B] bg-[#F8FAFC] dark:bg-[#0F172A] flex items-center justify-between text-[11px] font-semibold text-[#64748B] dark:text-slate-400 tracking-wider uppercase transition-colors">
         <span className="truncate font-sans font-bold">
           {currentProject?.name ? `EXPLORER: ${currentProject.name}` : 'EXPLORER'}
         </span>
-        <div className="flex items-center gap-0.5 text-slate-500">
+        <div className="flex items-center gap-0.5 text-slate-500 dark:text-slate-400">
           <button
             onClick={() => { setIsCreatingFile(true); setIsCreatingFolder(false); }}
             title="New File"
-            className="p-1 hover:text-[#1E293B] hover:bg-slate-200/60 rounded transition-colors"
+            className="p-1 hover:text-[#1E293B] dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800 rounded transition-colors"
           >
             <Plus className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => { setIsCreatingFolder(true); setIsCreatingFile(false); }}
             title="New Folder"
-            className="p-1 hover:text-[#1E293B] hover:bg-slate-200/60 rounded transition-colors"
+            className="p-1 hover:text-[#1E293B] dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800 rounded transition-colors"
           >
             <FolderPlus className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => refreshFileTree()}
             title="Refresh File Tree"
-            className="p-1 hover:text-[#1E293B] hover:bg-slate-200/60 rounded transition-colors"
+            className="p-1 hover:text-[#1E293B] dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800 rounded transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
@@ -235,7 +235,7 @@ export const FileTree: React.FC<FileTreeProps> = ({ nodes }) => {
 
       {/* Inline Creation Input */}
       {(isCreatingFile || isCreatingFolder) && (
-        <div className="p-2 border-b border-[#E2E8F0] bg-[#FFFFFF]">
+        <div className="p-2 border-b border-[#E2E8F0] dark:border-[#1E293B] bg-[#FFFFFF] dark:bg-[#1E293B]">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -254,7 +254,7 @@ export const FileTree: React.FC<FileTreeProps> = ({ nodes }) => {
                   setIsCreatingFolder(false);
                 }
               }}
-              className="w-full bg-[#FFFFFF] text-[#1E293B] text-xs px-2 py-1 rounded border border-blue-500 outline-none font-mono shadow-xs"
+              className="w-full bg-[#FFFFFF] dark:bg-[#0B0F19] text-[#1E293B] dark:text-white text-xs px-2 py-1 rounded border border-blue-500 outline-none font-mono shadow-xs"
             />
           </form>
         </div>
@@ -263,7 +263,7 @@ export const FileTree: React.FC<FileTreeProps> = ({ nodes }) => {
       {/* File Tree List */}
       <div className="flex-1 overflow-y-auto py-1.5">
         {nodes.length === 0 ? (
-          <div className="p-4 text-xs text-[#64748B] text-center">
+          <div className="p-4 text-xs text-[#64748B] dark:text-slate-500 text-center">
             Workspace is empty.
           </div>
         ) : (

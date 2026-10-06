@@ -14,9 +14,16 @@
     user-select: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  /* Refined scrollbars for VS Code light theme */
+  /* Dark mode root styles */
+  html.dark body {
+    background-color: #0B0F19;
+    color: #F8FAFC;
+  }
+
+  /* Refined scrollbars */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -31,6 +38,13 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #94A3B8;
   }
+
+  html.dark ::-webkit-scrollbar-thumb {
+    background: #334155;
+  }
+  html.dark ::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+  }
 }
 
 /* VS Code-style surfaces */
@@ -38,6 +52,11 @@
   background: #FFFFFF;
   border: 1px solid #E2E8F0;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+.dark .vscode-card {
+  background: #1E293B;
+  border-color: #334155;
 }
 
 .vscode-card-hover {

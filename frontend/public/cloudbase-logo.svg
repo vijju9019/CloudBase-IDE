@@ -1,31 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
   <defs>
-    <linearGradient id="cloudGrad" x1="10%" y1="10%" x2="90%" y2="90%">
-      <stop offset="0%" stop-color="#3B82F6" />
-      <stop offset="100%" stop-color="#8B5CF6" />
+    <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#3B82F6" />
     </linearGradient>
-    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.8" />
-      <stop offset="100%" stop-color="#A78BFA" stop-opacity="0.8" />
+    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EFF6FF" />
+      <stop offset="100%" stop-color="#DBEAFE" />
     </linearGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="4" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#2563EB" flood-opacity="0.18" />
     </filter>
   </defs>
-  <!-- Background subtle rounded rect -->
-  <rect x="8" y="8" width="84" height="84" rx="20" fill="#111827" stroke="#2A364F" stroke-width="2"/>
-  
-  <!-- Cloud outline with gradient -->
-  <path d="M68 56C71.3 56 74 53.3 74 50C74 46.9 71.6 44.4 68.6 44.1C68.1 38.4 63.3 34 57.5 34C54.4 34 51.6 35.3 49.7 37.4C48.2 36.5 46.4 36 44.5 36C39.8 36 36 39.8 36 44.5C36 45 36.1 45.6 36.2 46.1C33.8 47.1 32 49.4 32 52.2C32 55.4 34.6 58 37.8 58L68 58" 
-        stroke="url(#cloudGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.45" />
 
-  <!-- Code brackets </> stylized in center -->
-  <path d="M42 47L34 53L42 59" stroke="url(#glowGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M58 47L66 53L58 59" stroke="url(#glowGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M53 44L47 62" stroke="#38BDF8" stroke-width="3" stroke-linecap="round" />
+  <!-- Background rounded pill -->
+  <rect x="6" y="6" width="88" height="88" rx="22" fill="url(#badgeGrad)" stroke="#BFDBFE" stroke-width="2"/>
 
-  <!-- Accent node dots -->
-  <circle cx="26" cy="26" r="3" fill="#3B82F6" />
-  <circle cx="74" cy="74" r="3" fill="#8B5CF6" />
+  <!-- Cloud Base Silhouette -->
+  <path d="M72 58C75.8 58 79 54.8 79 51C79 47.4 76.2 44.5 72.7 44.1C72.1 37.6 66.5 32.5 59.8 32.5C56.2 32.5 53 34 50.8 36.4C49.1 35.3 47 34.8 44.8 34.8C39.4 34.8 35 39.2 35 44.6C35 45.2 35.1 45.9 35.2 46.5C32.4 47.7 30.5 50.4 30.5 53.6C30.5 57.3 33.5 60.3 37.2 60.3L72 60.3" 
+        fill="url(#cloudGrad)" 
+        filter="url(#shadow)" />
+
+  <!-- Code brackets in white -->
+  <path d="M43 46L36 52L43 58" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M57 46L64 52L57 58" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M52 43L48 61" stroke="#BAE6FD" stroke-width="2.5" stroke-linecap="round" />
 </svg>
